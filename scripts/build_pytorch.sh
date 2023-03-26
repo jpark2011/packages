@@ -30,7 +30,6 @@ init() {
         log "Error: Cannot find $WORK_DIR" 
         exit 1
     fi
-    cd $WORK_DIR
     log "Packages will be downloaded under $WORK_DIR"
 
     # activate anaconda env
@@ -40,9 +39,11 @@ init() {
 }
 
 build_xpu_pytorch() {
+    pushd .
+    cd $WORK_DIR
     # internal version
     pytorch_git=https://github.com/intel-innersource/frameworks.ai.pytorch.private-gpu
-    pytorch_dir=$WORK_DIR/frameworks.ai.pytorch.private-gpu
+    pytorch_dir=frameworks.ai.pytorch.private-gpu
     if [ ! -d "$pytorch_dir" ]; then
         log "Cloning from $pytorch_git"
         git clone $pytorch_git
@@ -58,13 +59,18 @@ build_xpu_pytorch() {
     python setup.py install
 
     unset CMAKE_PREFIX_PATH
+    popd
 }
 
 build_xpu_ipex() {
+    pushd .
+    cd $WORK_DIR
     ipex_git=https://github.com/intel-innersource/frameworks.ai.pytorch.ipex-gpu.git
-    ipex_dir=$WORK_DIR/frameworks.ai.pytorch.ipex-gpu
+    ipex_dir=frameworks.ai.pytorch.ipex-gpu
     export USE_AOT_DEVLIST='pvc,ats-m75'
     # export USE_AOT_DEVLIST='ats-m75'
+    # Enable ITT annotation in sycle kernel
+    export USE_ITT_ANNOTATION=ON
     if [ ! -d "$ipex_dir" ]; then
         log "Cloning from $ipex_git"
         git clone $ipex_git
@@ -80,6 +86,7 @@ build_xpu_ipex() {
 
     python setup.py bdist_wheel
     python setup.py install
+    popd
 }
 
 init
@@ -90,7 +97,7 @@ if [ "$DEVICE" == "cpu" ]; then
 elif [ "$DEVICE" == "xpu" ]; then
     log "Building $DEVICE PyTorch"
 
-    build_xpu_pytorch
+    # build_xpu_pytorch
     build_xpu_ipex
 
 else
