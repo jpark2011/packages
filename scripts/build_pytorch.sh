@@ -38,6 +38,30 @@ init() {
     source $anaconda_dir/etc/profile.d/conda.sh && conda activate $conda_env
 }
 
+build_cpu_pytorch() {
+    pushd .
+    cd $WORK_DIR
+    # internal version
+    pytorch_git=https://github.com/intel-innersource/frameworks.ai.pytorch.private-gpu
+    pytorch_dir=frameworks.ai.pytorch.private-gpu
+    if [ ! -d "$pytorch_dir" ]; then
+        log "Cloning from $pytorch_git"
+        git clone $pytorch_git
+    fi
+    cd $pytorch_dir
+    git submodule sync && git submodule update --init --recursive
+    pip install -r requirements.txt
+
+    log "Building PyTorch"
+    export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
+
+    python setup.py bdist_wheel
+    python setup.py install
+
+    unset CMAKE_PREFIX_PATH
+    popd
+}
+
 build_xpu_pytorch() {
     pushd .
     cd $WORK_DIR
@@ -93,6 +117,8 @@ init
 
 if [ "$DEVICE" == "cpu" ]; then
     log "Building $DEVICE PyTorch"
+
+    build_cpu_pytorch
 
 elif [ "$DEVICE" == "xpu" ]; then
     log "Building $DEVICE PyTorch"

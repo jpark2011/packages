@@ -7,7 +7,19 @@
         {
             "type": "bashdb",
             "request": "launch",
-            "name": "Bash-Debug (build_pytorch.sh)",
+            "name": "Bash-Debug (build_libtorch)",
+            "program": "${workspaceFolder}/scripts/build_libtorch.sh",
+            "args": [
+                "-t",
+                "-w", "../../pkg_build",
+            ],
+            "cwd": "${workspaceFolder}/scripts",
+            "terminalKind": "integrated"
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bash-Debug (build_pytorch)",
             "program": "${workspaceFolder}/scripts/build_pytorch.sh",
             "args": [
                 "-d", "xpu",
