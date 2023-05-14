@@ -11,7 +11,8 @@
             "program": "${workspaceFolder}/scripts/build_libtorch.sh",
             "args": [
                 "-t",
-                "-w", "../../pkg_build",
+                "-v", "v2.0.1",
+                "-w", "~/work/pkg_build/libtorch-2.0",
             ],
             "cwd": "${workspaceFolder}/scripts",
             "terminalKind": "integrated"
@@ -23,7 +24,7 @@
             "program": "${workspaceFolder}/scripts/build_pytorch.sh",
             "args": [
                 "-d", "xpu",
-                "-w", "../../pkg_build"
+                "-w", "~/work/pkg_build/libtorch-2.0"
             ],
             "cwd": "${workspaceFolder}/scripts",
             "terminalKind": "integrated"
