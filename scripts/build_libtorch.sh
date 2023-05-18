@@ -2,7 +2,7 @@
 set -e
 
 # option format: space<option>) # <comments>
-usage() { echo "$0 usage:" && grep " .)\ #" $0 && echo "Example: $0 -v 2.0.1 -w /home/intel/work/pkg_build/libtorch-2.0"; exit 0; }
+usage() { echo "$0 usage:" && grep " .)\ #" $0 && echo "Example: $0 -v v2.0.1 -w /home/intel/work/pkg_build/libtorch-2.0"; exit 0; }
 
 MKL=1
 TBB=0
