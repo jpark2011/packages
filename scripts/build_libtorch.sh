@@ -176,7 +176,7 @@ build_aten_libtorch() {
     log "Building PyTorch"
 
     libtorch_dir=libtorch-2.1.0-nomkl
-    rm -rf ../${libtorch_dir}-build
+    rm -rf ../${libtorch_dir}-build`
     mkdir ../${libtorch_dir}-build
     cd ../${libtorch_dir}-build
     export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
